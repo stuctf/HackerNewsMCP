@@ -1,0 +1,15 @@
+.claude/
+.mcp.json
+.env
+.DS_Store
+
+# Compiled binaries
+hn-mcp
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Project docs
+HACKERNEWSMCPPLAN.md
+HACKERNEWSMCP_IMPLEMENTED.md
