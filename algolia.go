@@ -13,11 +13,11 @@ const algoliaBase = "https://hn.algolia.com/api/v1"
 
 // AlgoliaResponse is the raw response from the Algolia API.
 type AlgoliaResponse struct {
-	Hits             []AlgoliaHit `json:"hits"`
-	NbHits           int          `json:"nbHits"`
-	Page             int          `json:"page"`
-	NbPages          int          `json:"nbPages"`
-	HitsPerPage      int          `json:"hitsPerPage"`
+	Hits        []AlgoliaHit `json:"hits"`
+	NbHits      int          `json:"nbHits"`
+	Page        int          `json:"page"`
+	NbPages     int          `json:"nbPages"`
+	HitsPerPage int          `json:"hitsPerPage"`
 }
 
 // AlgoliaHit is a single search result.
