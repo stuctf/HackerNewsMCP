@@ -169,11 +169,7 @@ func handleFrontPage(args json.RawMessage) ToolResult {
 	if !validFeeds[p.Feed] {
 		return toolError(fmt.Sprintf("invalid feed: %s", p.Feed))
 	}
-	if p.Limit < 1 {
-		p.Limit = 1
-	} else if p.Limit > 500 {
-		p.Limit = 500
-	}
+	p.Limit = max(1, min(500, p.Limit))
 
 	ids, err := FetchFeed(p.Feed)
 	if err != nil {
@@ -229,11 +225,7 @@ func handleSearch(args json.RawMessage) ToolResult {
 		}
 	}
 
-	if p.Limit < 1 {
-		p.Limit = 1
-	} else if p.Limit > 50 {
-		p.Limit = 50
-	}
+	p.Limit = max(1, min(50, p.Limit))
 
 	resp, err := SearchHN(SearchParams{
 		Query:     p.Query,
@@ -311,16 +303,8 @@ func handleComments(args json.RawMessage) ToolResult {
 	if p.StoryID == 0 {
 		return toolError("story_id is required")
 	}
-	if p.MaxDepth < 1 {
-		p.MaxDepth = 1
-	} else if p.MaxDepth > 10 {
-		p.MaxDepth = 10
-	}
-	if p.Limit < 1 {
-		p.Limit = 1
-	} else if p.Limit > 500 {
-		p.Limit = 500
-	}
+	p.MaxDepth = max(1, min(10, p.MaxDepth))
+	p.Limit = max(1, min(500, p.Limit))
 
 	story, comments, totalFetched, maxReached := FetchCommentTree(p.StoryID, p.MaxDepth, p.Limit)
 	if story == nil {
@@ -361,11 +345,7 @@ func handleUser(args json.RawMessage) ToolResult {
 	if !validUsername.MatchString(p.Username) {
 		return toolError("invalid username: must contain only alphanumeric characters, hyphens, or underscores")
 	}
-	if p.SubmissionLimit < 1 {
-		p.SubmissionLimit = 1
-	} else if p.SubmissionLimit > 100 {
-		p.SubmissionLimit = 100
-	}
+	p.SubmissionLimit = max(1, min(100, p.SubmissionLimit))
 
 	fbUser, err := FetchUser(p.Username)
 	if err != nil {

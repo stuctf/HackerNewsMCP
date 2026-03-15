@@ -9,13 +9,13 @@ func FetchCommentTree(storyID, maxDepth, limit int) (*FirebaseItem, []*Comment, 
 		return nil, nil, 0, false
 	}
 
-	var count int64
+	var count atomic.Int64
 	maxReached := false
 	comments := buildTree(story.Kids, 1, maxDepth, limit, &count, &maxReached)
-	return story, comments, int(count), maxReached
+	return story, comments, int(count.Load()), maxReached
 }
 
-func buildTree(kidIDs []int, depth, maxDepth, limit int, count *int64, maxReached *bool) []*Comment {
+func buildTree(kidIDs []int, depth, maxDepth, limit int, count *atomic.Int64, maxReached *bool) []*Comment {
 	if len(kidIDs) == 0 || depth > maxDepth {
 		if depth > maxDepth && len(kidIDs) > 0 {
 			*maxReached = true
@@ -30,10 +30,10 @@ func buildTree(kidIDs []int, depth, maxDepth, limit int, count *int64, maxReache
 		if item == nil || item.Deleted || item.Dead {
 			continue
 		}
-		if int(atomic.LoadInt64(count)) >= limit {
+		if int(count.Load()) >= limit {
 			break
 		}
-		atomic.AddInt64(count, 1)
+		count.Add(1)
 
 		c := &Comment{
 			ID:   item.ID,

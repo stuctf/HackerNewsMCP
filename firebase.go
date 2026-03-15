@@ -66,16 +66,14 @@ func FetchItems(ids []int, concurrency int) []*FirebaseItem {
 	var wg sync.WaitGroup
 
 	for i, id := range ids {
-		wg.Add(1)
 		sem <- struct{}{}
-		go func(i, id int) {
-			defer wg.Done()
+		wg.Go(func() {
 			defer func() { <-sem }()
 			item, err := FetchItem(id)
 			if err == nil {
 				results[i] = item
 			}
-		}(i, id)
+		})
 	}
 
 	wg.Wait()

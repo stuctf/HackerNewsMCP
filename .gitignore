@@ -11,5 +11,5 @@ hn-mcp
 *.dylib
 
 # Project docs
-HACKERNEWSMCPPLAN.md
-HACKERNEWSMCP_IMPLEMENTED.md
+CLAUDE.md
+docs/
