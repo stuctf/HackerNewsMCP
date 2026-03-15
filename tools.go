@@ -15,20 +15,20 @@ func AllTools() []ToolDef {
 		{
 			Name:        "hn_front_page",
 			Description: "Fetch stories from a Hacker News feed with full metadata.",
-			InputSchema: map[string]interface{}{
+			InputSchema: map[string]any{
 				"type": "object",
-				"properties": map[string]interface{}{
-					"feed": map[string]interface{}{
+				"properties": map[string]any{
+					"feed": map[string]any{
 						"type":        "string",
 						"description": "Feed type: top, new, best, ask, show, job",
 						"default":     "top",
 					},
-					"limit": map[string]interface{}{
+					"limit": map[string]any{
 						"type":        "number",
 						"description": "Number of stories (1-500)",
 						"default":     30,
 					},
-					"include_urls": map[string]interface{}{
+					"include_urls": map[string]any{
 						"type":        "boolean",
 						"description": "Include URLs in output (default false)",
 						"default":     false,
@@ -39,43 +39,43 @@ func AllTools() []ToolDef {
 		{
 			Name:        "hn_search",
 			Description: "Search Hacker News history via Algolia with filters.",
-			InputSchema: map[string]interface{}{
+			InputSchema: map[string]any{
 				"type":     "object",
 				"required": []string{},
-				"properties": map[string]interface{}{
-					"query": map[string]interface{}{
+				"properties": map[string]any{
+					"query": map[string]any{
 						"type":        "string",
 						"description": "Search terms",
 					},
-					"type": map[string]interface{}{
+					"type": map[string]any{
 						"type":        "string",
 						"description": "Filter: story, comment, or all",
 						"default":     "story",
 					},
-					"min_points": map[string]interface{}{
+					"min_points": map[string]any{
 						"type":        "number",
 						"description": "Minimum score filter",
 						"default":     0,
 					},
-					"date_from": map[string]interface{}{
+					"date_from": map[string]any{
 						"type":        "string",
 						"description": "Start date (ISO 8601, e.g. 2025-01-01)",
 					},
-					"date_to": map[string]interface{}{
+					"date_to": map[string]any{
 						"type":        "string",
 						"description": "End date (ISO 8601)",
 					},
-					"sort": map[string]interface{}{
+					"sort": map[string]any{
 						"type":        "string",
 						"description": "Sort by: points or date",
 						"default":     "points",
 					},
-					"limit": map[string]interface{}{
+					"limit": map[string]any{
 						"type":        "number",
 						"description": "Max results (1-50)",
 						"default":     20,
 					},
-					"include_urls": map[string]interface{}{
+					"include_urls": map[string]any{
 						"type":        "boolean",
 						"description": "Include URLs in output (default false)",
 						"default":     false,
@@ -86,20 +86,20 @@ func AllTools() []ToolDef {
 		{
 			Name:        "hn_comments",
 			Description: "Fetch a story's comment tree with depth and limit control.",
-			InputSchema: map[string]interface{}{
+			InputSchema: map[string]any{
 				"type":     "object",
 				"required": []string{"story_id"},
-				"properties": map[string]interface{}{
-					"story_id": map[string]interface{}{
+				"properties": map[string]any{
+					"story_id": map[string]any{
 						"type":        "number",
 						"description": "HN item ID",
 					},
-					"max_depth": map[string]interface{}{
+					"max_depth": map[string]any{
 						"type":        "number",
 						"description": "Recursion depth (1 = top-level only)",
 						"default":     3,
 					},
-					"limit": map[string]interface{}{
+					"limit": map[string]any{
 						"type":        "number",
 						"description": "Max total comments",
 						"default":     50,
@@ -110,20 +110,20 @@ func AllTools() []ToolDef {
 		{
 			Name:        "hn_user",
 			Description: "Fetch a Hacker News user profile and optionally recent submissions.",
-			InputSchema: map[string]interface{}{
+			InputSchema: map[string]any{
 				"type":     "object",
 				"required": []string{"username"},
-				"properties": map[string]interface{}{
-					"username": map[string]interface{}{
+				"properties": map[string]any{
+					"username": map[string]any{
 						"type":        "string",
 						"description": "Case-sensitive HN username",
 					},
-					"include_submissions": map[string]interface{}{
+					"include_submissions": map[string]any{
 						"type":        "boolean",
 						"description": "Include recent submissions",
 						"default":     false,
 					},
-					"submission_limit": map[string]interface{}{
+					"submission_limit": map[string]any{
 						"type":        "number",
 						"description": "Number of submissions to fetch",
 						"default":     10,
@@ -327,8 +327,8 @@ func handleComments(args json.RawMessage) ToolResult {
 		return toolError(fmt.Sprintf("could not fetch story %d", p.StoryID))
 	}
 
-	result := map[string]interface{}{
-		"story": map[string]interface{}{
+	result := map[string]any{
+		"story": map[string]any{
 			"id":    story.ID,
 			"title": story.Title,
 			"url":   story.URL,
@@ -408,7 +408,7 @@ func toolText(text string) ToolResult {
 	}
 }
 
-func toolJSON(v interface{}) ToolResult {
+func toolJSON(v any) ToolResult {
 	data, err := json.Marshal(v)
 	if err != nil {
 		return toolError("failed to marshal result")

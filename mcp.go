@@ -12,10 +12,10 @@ type JSONRPCRequest struct {
 }
 
 type JSONRPCResponse struct {
-	JSONRPC string      `json:"jsonrpc"`
+	JSONRPC string          `json:"jsonrpc"`
 	ID      json.RawMessage `json:"id,omitempty"`
-	Result  interface{} `json:"result,omitempty"`
-	Error   *RPCError   `json:"error,omitempty"`
+	Result  any             `json:"result,omitempty"`
+	Error   *RPCError       `json:"error,omitempty"`
 }
 
 type RPCError struct {
@@ -26,9 +26,9 @@ type RPCError struct {
 // MCP-specific types.
 
 type InitializeResult struct {
-	ProtocolVersion string     `json:"protocolVersion"`
+	ProtocolVersion string       `json:"protocolVersion"`
 	Capabilities    Capabilities `json:"capabilities"`
-	ServerInfo      ServerInfo `json:"serverInfo"`
+	ServerInfo      ServerInfo   `json:"serverInfo"`
 }
 
 type Capabilities struct {
@@ -45,9 +45,9 @@ type ToolsListResult struct {
 }
 
 type ToolDef struct {
-	Name        string      `json:"name"`
-	Description string      `json:"description"`
-	InputSchema interface{} `json:"inputSchema"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	InputSchema any    `json:"inputSchema"`
 }
 
 type ToolsCallParams struct {
